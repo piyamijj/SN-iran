@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type { Lang } from '@/lib/i18n/config';
 import { formatNumber } from '@/lib/i18n/format';
 import { getDictionary } from '@/lib/i18n/dictionaries';
+import { Marquee } from '@/components/layout/marquee';
 import type { MarketQuote, MarketSymbol } from '@/types';
 
 const LABELS: Record<Lang, Record<MarketSymbol, string>> = {
@@ -25,8 +26,8 @@ export function MarketTicker({ lang }: { lang: Lang }) {
 
   if (quotes.length === 0) return null;
   return (
-    <div className="border-b border-oled-border bg-oled-panel text-xs" title={t.marketNote}>
-      <div className="container hide-scrollbar flex gap-5 overflow-x-auto whitespace-nowrap py-1.5" dir={lang === 'fa' ? 'rtl' : 'ltr'}>
+    <div className="border-b border-oled-border bg-oled-panel py-1.5 text-xs" title={t.marketNote}>
+      <Marquee rtl={lang === 'fa'} seconds={35}>
         {quotes.map((q) => (
           <span key={q.symbol} className="flex items-center gap-1.5">
             <span className="text-muted-foreground">{LABELS[lang][q.symbol]}</span>
@@ -36,7 +37,7 @@ export function MarketTicker({ lang }: { lang: Lang }) {
             </span>
           </span>
         ))}
-      </div>
+      </Marquee>
     </div>
   );
 }
