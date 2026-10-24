@@ -31,6 +31,7 @@ export function getSupabaseServiceClient(): SupabaseClient {
   }
 
   serviceClient = createClient(supabaseUrl, serviceRoleKey, {
+    global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) }, // Next veri önbelleği ingest'i bayatlatmasın
     auth: {
       persistSession: false,
       autoRefreshToken: false,
