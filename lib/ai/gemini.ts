@@ -9,7 +9,7 @@ export const EMBEDDING_DIMENSIONS = 768;
 let activeKey = 0;
 
 function keys(): string[] {
-  return [process.env.GEMINI_API_KEY, process.env.GEMINI_API_KEY_2].filter((k): k is string => !!k?.trim());
+  return [...(process.env.GEMINI_API_KEYS ?? '').split(','), process.env.GEMINI_API_KEY, process.env.GEMINI_API_KEY_2].map((k) => k?.trim()).filter((k): k is string => !!k);
 }
 
 export function hasGemini(): boolean {
@@ -26,7 +26,7 @@ async function callGemini(path: string, body: unknown): Promise<Response | null>
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (res.status === 429 && list.length > 1) {
+    if ((res.status === 429 || res.status === 403) && list.length > 1) {
       activeKey = (activeKey + attempt + 1) % list.length;
       continue;
     }

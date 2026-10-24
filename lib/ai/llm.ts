@@ -10,11 +10,16 @@ import { NEWS_CATEGORIES } from '@/types';
 const FAST_MODEL = process.env.GROQ_FAST_MODEL ?? 'openai/gpt-oss-20b';
 const CHAT_MODEL = process.env.GROQ_CHAT_MODEL ?? 'openai/gpt-oss-120b';
 
-let groq: Groq | null = null;
+const groqClients = new Map<string, Groq>();
+let groqIdx = 0;
+/** GROQ_API_KEYS (virgülle ayrılmış) veya GROQ_API_KEY: istekler anahtarlar arasında dönüşümlü dağıtılır. */
 function getGroq(): Groq | null {
-  if (!process.env.GROQ_API_KEY) return null;
-  groq ??= new Groq({ apiKey: process.env.GROQ_API_KEY });
-  return groq;
+  const keys = [...(process.env.GROQ_API_KEYS ?? '').split(','), process.env.GROQ_API_KEY].map((k) => k?.trim()).filter((k): k is string => !!k);
+  if (keys.length === 0) return null;
+  const key = keys[groqIdx++ % keys.length];
+  let c = groqClients.get(key);
+  if (!c) { c = new Groq({ apiKey: key }); groqClients.set(key, c); }
+  return c;
 }
 
 export async function llmText(system: string, user: string, opts: { json?: boolean; chat?: boolean; maxTokens?: number } = {}): Promise<string | null> {
