@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 240 5% 4%;
+  --foreground: 0 0% 96%;
+  --card: 240 4% 7%;
+  --card-foreground: 0 0% 96%;
+  --popover: 240 5% 7%;
+  --popover-foreground: 0 0% 96%;
+  --primary: 152 60% 38%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 4% 12%;
+  --secondary-foreground: 0 0% 92%;
+  --muted: 240 4% 12%;
+  --muted-foreground: 240 5% 65%;
+  --accent: 240 4% 15%;
+  --accent-foreground: 0 0% 96%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 240 4% 16%;
+  --input: 240 4% 16%;
+  --ring: 152 60% 38%;
+  --radius: 0.75rem;
+}
+
+* { border-color: hsl(var(--border)); }
+html { color-scheme: dark; overflow-x: hidden; }
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+/* Farsça için Vazirmatn, Türkçe için Inter */
+html[lang='fa'] body { font-family: var(--font-vazir), system-ui, sans-serif; line-height: 1.8; }
+html[lang='tr'] body { font-family: var(--font-inter), system-ui, sans-serif; }
+
+.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.num { font-variant-numeric: tabular-nums; unicode-bidi: plaintext; }

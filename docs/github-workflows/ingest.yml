@@ -1,0 +1,14 @@
+# Her 10 dakikada bir haber çekme endpoint'ini tetikler (Vercel Hobby planı yalnızca günlük cron destekler).
+# Gerekli GitHub Secrets: SITE_URL (örn. https://sn-iran.vercel.app), CRON_SECRET
+name: ingest
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger ingest
+        run: |
+          curl -fsS -m 90 -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" "${{ secrets.SITE_URL }}/api/cron/rss-ingest"
