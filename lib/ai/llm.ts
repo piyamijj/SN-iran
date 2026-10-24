@@ -95,6 +95,7 @@ export async function translateBatch(
     `You are a professional news translator. Translate from ${LANG_NAME[from]} to ${LANG_NAME[to]}.`,
     'Translate faithfully and literally in a neutral news register. Do NOT rewrite, summarize, add or remove information, or add commentary.',
     'Keep proper nouns, numbers and quotes accurate. If the summary is empty, return an empty string.',
+    'Glossary: the Iranian currency unit "تومان"/"toman" must be rendered as "toman" (Turkish: "toman"), NEVER as lira/TL; "ریال" = "riyal". Geography: "تنگه هرمز" = "Hürmüz Boğazı" (Turkish), "خلیج فارس" = "Basra Körfezi" is NOT used, use "Fars Körfezi". Be careful with place names; transliterate when unsure.',
     withCategory ? `Also classify each item into exactly one category from: ${NEWS_CATEGORIES.join(', ')}.` : '',
     `Reply ONLY with JSON: {"items":[{"id":"...","title":"...","summary":"..."${withCategory ? ',"category":"..."' : ''}}]}`,
   ].filter(Boolean).join('\n');
